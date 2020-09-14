@@ -5,26 +5,27 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/User");
 
 interface IUser {
-  _id: Number;
-  email: String;
-  password: String;
-  likedMovies: Array<String>;
-  dislikedMovies: Array<String>;
+  _id: number;
+  email: string;
+  password: string;
+  likedMovies: Array<string>;
+  dislikedMovies: Array<string>;
   date: Date;
 }
 
 module.exports = (passport: any) => {
   passport.use(
     new LocalStrategy(
-      async (email: String, password: String, done: Function) => {
+      { usernameField: "email", passwordField: "password" },
+      async (email: string, password: string, done: Function) => {
         try {
           const user: IUser = await User.findOne({ email });
           if (!user) done(null, false);
           else
             bcrypt.compare(
-              password as string,
-              user.password as string,
-              (err: Error, isMatch: Boolean) => {
+              password,
+              user.password,
+              (err: Error, isMatch: boolean) => {
                 if (err) throw err;
                 else if (isMatch) return done(null, user);
                 else return done(null, false);
@@ -41,7 +42,7 @@ module.exports = (passport: any) => {
     done(null, user._id);
   });
 
-  passport.deserializeUser((id: Number, done: Function) => {
+  passport.deserializeUser((id: number, done: Function) => {
     User.findById(id, function (err: Error, user: IUser) {
       done(err, user);
     });
