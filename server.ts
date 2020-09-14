@@ -45,5 +45,10 @@ app.use(passport.initialize());
 // PORT
 const PORT = process.env.PORT || 3000;
 
+// ROUTES
+app.use("/", require("./routes/index"));
+app.use("/users", require("./routes/users"));
+app.use("/movie", require("./routes/users"));
+
 // START SERVER
 app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`));
