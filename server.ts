@@ -57,15 +57,14 @@ const swaggerOptions = {
   swaggerDefinition: {
     info: {
       version: "1.0.0",
-      title: "Customer API",
-      description: "Customer API Information",
+      title: "MovieDB API",
+      description: "MSA-2020 MovieDB API Information",
       contact: {
-        name: "Amazing Developer",
+        name: "Neeraj Ghodla",
       },
       servers: ["http://localhost:3000"],
     },
   },
-  // ['.routes/*.js']
   apis: ["./dist/routes/*.js"],
 };
 
