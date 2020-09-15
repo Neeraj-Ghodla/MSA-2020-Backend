@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 const MongoStore = require("connect-mongo")(session);
 import cors from "cors";
 import bodyParser from "body-parser";
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 // INIT APP
 const app = express();
@@ -46,9 +48,29 @@ app.use(passport.initialize());
 const PORT = process.env.PORT || 3000;
 
 // ROUTES
-app.use("/", require("./routes/index"));
+// app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
-app.use("/movie", require("./routes/users"));
+app.use("/movie", require("./routes/movies"));
+
+// Extended: https://swagger.io/specification/#infoObject
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      version: "1.0.0",
+      title: "Customer API",
+      description: "Customer API Information",
+      contact: {
+        name: "Amazing Developer",
+      },
+      servers: ["http://localhost:3000"],
+    },
+  },
+  // ['.routes/*.js']
+  apis: ["./dist/routes/*.js"],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // START SERVER
 app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`));

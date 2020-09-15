@@ -14,14 +14,68 @@ interface IUser {
   date: Date;
 }
 
-// Login Handle
+/**
+ * @swagger
+ *  paths:
+ *   /users/login:
+ *     post:
+ *       summary: Logs in a user.
+ *       tags:
+ *         - users
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *         - in: body
+ *           name: user
+ *           description: the user to login
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *       responses:
+ *         200:
+ *           description: Created
+ */
 router.post(
   "/login",
   passport.authenticate("local"),
   (req: Request, res: Response): Response => res.send(req.user)
 );
 
-// Register Handle
+/**
+ * @swagger
+ *  paths:
+ *   /users/register:
+ *     post:
+ *       summary: Creates a new user.
+ *       tags:
+ *         - users
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *         - in: body
+ *           name: user
+ *           description: the user to register
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *       responses:
+ *         200:
+ *           description: Created
+ */
 router.post("/register", async (req: Request, res: Response) => {
   const { email, password } = req.body;
   // Check if the user exists
@@ -49,8 +103,35 @@ router.post("/register", async (req: Request, res: Response) => {
   }
 });
 
-// Like Handle
-router.post("/liked", async (req: Request, res: Response) => {
+/**
+ * @swagger
+ *  paths:
+ *   /users/liked:
+ *     put:
+ *       summary: Like a movie
+ *       tags:
+ *         - users
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *         - in: body
+ *           name: user and movie
+ *           description: useid and movieid
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userID
+ *               - movieID
+ *             properties:
+ *               userID:
+ *                 type: string
+ *               movieID:
+ *                 type: string
+ *       responses:
+ *         200:
+ *           description: Movie liked
+ */
+router.put("/liked", async (req: Request, res: Response) => {
   const { movieID, userID } = req.body;
   let user: IUser = await User.findOne({ _id: userID });
   if (user.likedMovies.includes(movieID))
@@ -67,8 +148,35 @@ router.post("/liked", async (req: Request, res: Response) => {
   return res.send(user);
 });
 
-// Dislike Handle
-router.post("/disliked", async (req: Request, res: Response) => {
+/**
+ * @swagger
+ *  paths:
+ *   /users/disliked:
+ *     put:
+ *       summary: Dislike a movie
+ *       tags:
+ *         - users
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *         - in: body
+ *           name: user and movie
+ *           description: useid and movieid
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userID
+ *               - movieID
+ *             properties:
+ *               userID:
+ *                 type: string
+ *               movieID:
+ *                 type: string
+ *       responses:
+ *         200:
+ *           description: Movie disliked
+ */
+router.put("/disliked", async (req: Request, res: Response) => {
   const { movieID, userID } = req.body;
   // check if the movie is already disliked
   let user: IUser = await User.findOne({ _id: userID });
@@ -87,6 +195,38 @@ router.post("/disliked", async (req: Request, res: Response) => {
     );
   user = await User.findOne({ _id: userID });
   return res.send(user);
+});
+
+/**
+ * @swagger
+ *  paths:
+ *   /users/delete:
+ *     delete:
+ *       summary: Delete a user
+ *       tags:
+ *         - users
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *         - in: body
+ *           name: user
+ *           description: useid
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userID
+ *             properties:
+ *               userID:
+ *                 type: string
+ *       responses:
+ *         200:
+ *           description: Movie disliked
+ */
+router.delete("/delete", async (req: Request, res: Response) => {
+  const { userID } = req.body;
+  const { deleteCount } = await User.deleteOne({ _id: userID });
+  if (deleteCount === 1) return res.send("User successfully deleted");
+  else return res.send("User not found...");
 });
 
 module.exports = router;

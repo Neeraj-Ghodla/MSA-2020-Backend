@@ -9,7 +9,22 @@ interface IMovie {
   date: Date;
 }
 
-// Handle GET movie
+/**
+ * @swagger
+ *  paths:
+ *   /movie:
+ *     get:
+ *       summary: Shows comments for a movie
+ *       tags:
+ *         - movie
+ *       parameters:
+ *         - in: query
+ *           name: movieID
+ *           description: movieid
+ *       responses:
+ *         200:
+ *           description: A successful response
+ */
 router.get("/", async (req: Request, res: Response) => {
   const { movieID } = req.query;
   let movie: IMovie = await Movie.findOne({ movieID });
@@ -21,7 +36,34 @@ router.get("/", async (req: Request, res: Response) => {
   return res.send(movie);
 });
 
-// Handle add comment
+/**
+ * @swagger
+ *  paths:
+ *   /movie/add:
+ *     post:
+ *       summary: Adds a comment.
+ *       tags:
+ *         - movie
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *         - in: body
+ *           name: movie
+ *           description: add a comment
+ *           schema:
+ *             type: object
+ *             required:
+ *               - movieID
+ *               - comment
+ *             properties:
+ *               movieID:
+ *                 type: string
+ *               comment:
+ *                 type: string
+ *       responses:
+ *         200:
+ *           description: Comment added.
+ */
 router.post("/add", async (req: Request, res: Response) => {
   const { movieID, comment } = req.body;
   let movie: IMovie = await Movie.findOne({ movieID });
