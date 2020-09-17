@@ -83,7 +83,7 @@ router.post("/register", async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   // Check if the user exists
   const user: IUser = await User.findOne({ email });
-  if (user) return res.send("Email already registered");
+  if (user) return res.json({ err: "Email already registered" });
   else {
     const newUser = new User({ username, email, password });
     // hash the password
@@ -93,7 +93,7 @@ router.post("/register", async (req: Request, res: Response) => {
       newUser.password = hash;
     } catch (err) {
       console.log(err);
-      return res.send(err);
+      return res.json({ err: err });
     }
 
     // Save the newUser
@@ -101,7 +101,7 @@ router.post("/register", async (req: Request, res: Response) => {
       return res.send(await newUser.save());
     } catch (err) {
       console.log(err);
-      return res.send({ err: err });
+      return res.json({ err: err });
     }
   }
 });
