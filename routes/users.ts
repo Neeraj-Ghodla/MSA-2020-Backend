@@ -77,12 +77,12 @@ router.post(
  *           description: Created
  */
 router.post("/register", async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
   // Check if the user exists
   const user: IUser = await User.findOne({ email });
   if (user) return res.send("Email already registered");
   else {
-    const newUser = new User({ email, password });
+    const newUser = new User({ username, email, password });
     // hash the password
     try {
       const salt = await bcrypt.genSalt();
