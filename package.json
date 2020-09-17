@@ -6,6 +6,7 @@
   "scripts": {
     "tsc": "tsc",
     "start": "node dist/server.js",
+    "dev": "npm run tsc && npm run start",
     "build": "tsc -p ."
   },
   "author": "",
