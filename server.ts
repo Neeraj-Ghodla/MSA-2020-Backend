@@ -28,7 +28,10 @@ app.use(passport.session());
 // APP CONFIG
 app.use(
   cors({
-    origin: "http://localhost:3001",
+    origin: [
+      "http://localhost:3001",
+      "http://msa-2020-moviedb-frontend.azurewebsites.net/",
+    ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
