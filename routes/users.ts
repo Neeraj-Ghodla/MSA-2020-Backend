@@ -67,10 +67,13 @@ router.post(
  *             required:
  *               - email
  *               - password
+ *               - username
  *             properties:
  *               email:
  *                 type: string
  *               password:
+ *                 type: string
+ *               username:
  *                 type: string
  *       responses:
  *         200:
