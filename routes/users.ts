@@ -101,7 +101,7 @@ router.post("/register", async (req: Request, res: Response) => {
       return res.send(await newUser.save());
     } catch (err) {
       console.log(err);
-      return res.send(err);
+      return res.send({ err: err });
     }
   }
 });
