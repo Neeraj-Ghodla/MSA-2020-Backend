@@ -7,7 +7,8 @@
     "tsc": "tsc",
     "start": "node dist/server.js",
     "dev": "npm run tsc && npm run start",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "npm run tsc && node dist/test.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "@types/mongoose": "^5.7.36",
     "@types/passport": "^1.0.4",
     "@types/passport-local": "^1.0.33",
+    "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "connect-mongo": "^3.2.0",
